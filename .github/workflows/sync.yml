@@ -1,0 +1,24 @@
+name: Sync GitLab contributions
+
+on:
+  schedule:
+    - cron: "17 20 * * *"   # daily, 01:47 IST
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Mirror new GitLab contributions
+        env:
+          AUTHOR_NAME: Amirishetty Sai Vignesh
+          AUTHOR_EMAIL: amirishettysaivignesh1@gmail.com
+        run: python3 scripts/sync.py
+      - name: Push
+        run: git push
